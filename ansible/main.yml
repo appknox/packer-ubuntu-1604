@@ -4,9 +4,42 @@
   gather_facts: yes
 
   tasks:
-    - apt: "name={{ item }} state=installed"
+    - name: get dokku repository key
+      apt_key: url=https://packagecloud.io/gpg.key state=present
+
+    - name: enable dokku repository
+      apt_repository: repo="deb https://packagecloud.io/dokku/dokku/ubuntu/ xenial main" state=present update_cache=yes
+
+    - name: install packages
+      apt: "name={{ item }} state=installed"
       with_items:
         - git
         - wget
         - curl
         - vim
+        - docker.io
+        - dokku
+        - pdmenu
+
+    # Dokku/Deis stuff here
+
+    # TODO: use templating to interpolate and display Appknox version in pdmenu
+    - name: copy pdmenurc
+      copy: src=files/pdmenurc dest=/home/appknox/.pdmenurc owner=appknox group=appknox mode=0644
+
+    - name: change default shell to dash
+      shell: chsh -s /bin/sh appknox
+
+    - name: invoke pdmenu at login
+      shell: cat "[ $SHELL == '/bin/sh' ] && pdmenu -q; exit" >> /home/appknox/.profile
+
+    - name: disable motd and login messages
+      file: path=/home/appknox/.hushlogin state=touch owner=appknox group=appknox mode=0644
+
+    - name: enable auto-login
+      copy: src=files/override.conf dest=/etc/systemd/system/getty@tty1.service.d/override.conf owner=root group=root mode=0644
+
+    - name: reload systemd daemon
+      systemd: daemon_reload=yes
+
+

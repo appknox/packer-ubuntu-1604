@@ -1,0 +1,21 @@
+# Copyright (c) 2016 XYSec Labs Pte. Ltd.
+
+title:Appknox Management Console
+
+menu:main:Main Menu:Use arrow keys to move, Esc for previous menu, Enter to select
+    show:Appknox is accessible at\:
+    preproc:hostname -I | xargs | tr ' ' '\n' | awk '{print "show: http\\://"$1"/"}'
+    nop
+    exec:Advanced Network Config::nano /etc/network/interfaces
+    exec:Restart Services::/bin/false # TODO: dokku specific changes here
+    nop
+    show:Reboot VM::reboot
+    show:Shutdown VM::shutdown
+
+menu:shutdown:Shutdown VM\: Are you sure?:This will shutdown the VM
+    exec:Yes::systemctl poweroff -i
+    exit:No
+
+menu:reboot:Reboot VM\: Are you sure?:This will reboot the VM
+    exec:Yes::systemctl reboot -i
+    exit:No
