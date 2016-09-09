@@ -1,4 +1,5 @@
 #!/bin/bash -eux
+set -eux
 
 apt -y update
 apt -y install software-properties-common

@@ -1,4 +1,5 @@
 #!/bin/bash -eux
+set -eux
 
 # Add appknox user to sudoers.
 echo "appknox        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers

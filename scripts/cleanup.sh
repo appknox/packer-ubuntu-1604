@@ -1,4 +1,5 @@
 #!/bin/bash -eux
+set -eux
 
 # uninstall Ansible and remove PPA
 apt -y remove --purge ansible
@@ -11,6 +12,7 @@ apt -y purge --auto-remove python-setuptools python-dev
 
 # apt cleanup
 apt autoremove
+apt clean
 apt update
 
 # delete unneeded files

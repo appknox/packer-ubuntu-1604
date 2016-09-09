@@ -51,12 +51,12 @@
         "<enter><wait>"
       ],
       "boot_wait": "10s",
-      "disk_size": 10240,
+      "disk_size": 20480,
       "export_opts": [
         "--vsys", "0",
-        "--product", "\"Appknox for Enterprise\"",
+        "--product", "Appknox\ for\ Enterprise",
         "--producturl", "https://www.appknox.com",
-        "--vendor", "\"XYSec Labs Pte. Ltd.\"",
+        "--vendor", "XYSec\ Labs\ Pte.\ Ltd.",
         "--vendorurl", "https://www.appknox.com",
         "--version", "0.1"
       ],
