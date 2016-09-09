@@ -1,7 +1,12 @@
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+Session.vim
+.netrwhist
+*~
+
 packer_cache/
 builds/
 output-virtualbox-iso/
-*.box
-*.iso
+iso/
 *.ova
 *.ovf

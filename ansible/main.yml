@@ -4,20 +4,22 @@
   gather_facts: yes
 
   tasks:
-    - name: get dokku repository key
+    - name: get docker repo key
+      apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=58118E89F3A912897C070ADBF76221572C52609D state=present
+
+    - name: enable docker repo
+      apt_repository: repo="deb https://apt.dockerproject.org/repo ubuntu-xenial main" state=present update_cache=yes 
+
+    - name: get dokku repo key
       apt_key: url=https://packagecloud.io/gpg.key state=present
 
-    - name: enable dokku repository
-      apt_repository: repo="deb https://packagecloud.io/dokku/dokku/ubuntu/ xenial main" state=present update_cache=yes
+    - name: enable dokku repo
+      apt_repository: repo="deb https://packagecloud.io/dokku/dokku/ubuntu/ trusty main" state=present update_cache=yes
 
     - name: install packages
       apt: "name={{ item }} state=installed"
       with_items:
-        - git
-        - wget
-        - curl
-        - vim
-        - docker.io
+        - docker-engine
         - dokku
         - pdmenu
 
@@ -31,15 +33,22 @@
       shell: chsh -s /bin/sh appknox
 
     - name: invoke pdmenu at login
-      shell: cat "[ $SHELL == '/bin/sh' ] && pdmenu -q; exit" >> /home/appknox/.profile
+      lineinfile: dest=/home/appknox/.profile regexp=pdmenu line="[ $SHELL = '/bin/sh' ] && pdmenu -q; exit"
 
     - name: disable motd and login messages
       file: path=/home/appknox/.hushlogin state=touch owner=appknox group=appknox mode=0644
 
+    - name: create systemd getty override directory
+      file: path=/etc/systemd/system/getty@tty1.service.d state=directory
+
     - name: enable auto-login
       copy: src=files/override.conf dest=/etc/systemd/system/getty@tty1.service.d/override.conf owner=root group=root mode=0644
 
-    - name: reload systemd daemon
-      systemd: daemon_reload=yes
+    - name: set grub timeout to zero
+      lineinfile: dest=/etc/default/grub regexp=GRUB_TIMEOUT= line="GRUB_TIMEOUT=0"
 
+    - name: enable silent boot
+      lineinfile: dest=/etc/default/grub regexp=GRUB_CMDLINE_LINUX_DEFAULT= line="GRUB_CMDLINE_LINUX_DEFAULT=\"quiet\""
 
+    - name: regenerate grub config
+      command: update-grub
