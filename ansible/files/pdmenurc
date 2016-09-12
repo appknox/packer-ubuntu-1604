@@ -6,7 +6,7 @@ menu:main:Main Menu:Use arrow keys to move, Esc for previous menu, Enter to sele
     show:Appknox is accessible at\:
     preproc:hostname -I | xargs | tr ' ' '\n' | awk '{print "show: http\\://"$1"/"}'
     nop
-    exec:Advanced Network Config::nano /etc/network/interfaces
+    exec:Advanced Network Config::sudo nano /etc/network/interfaces
     exec:Restart Services::/bin/false # TODO: dokku specific changes here
     nop
     show:Reboot VM::reboot

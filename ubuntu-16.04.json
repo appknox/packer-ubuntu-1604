@@ -6,14 +6,9 @@
       "script": "scripts/setup.sh"
     },
     {
-      "type": "shell",
-      "execute_command": "echo 'appknox' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/ansible.sh"
-    },
-    {
       "type": "ansible-local",
       "playbook_file": "ansible/main.yml",
-      "role_paths": []
+      "playbook_dir": "ansible"
     },
     {
       "type": "shell",
@@ -54,9 +49,9 @@
       "disk_size": 20480,
       "export_opts": [
         "--vsys", "0",
-        "--product", "Appknox\\ for\\ Enterprise",
+        "--product", "Appknox_Enterprise",
         "--producturl", "https://www.appknox.com",
-        "--vendor", "XYSec\\ Labs\\ Pte.\\ Ltd.",
+        "--vendor", "XYSec_Labs_Pte_Ltd",
         "--vendorurl", "https://www.appknox.com",
         "--version", "0.1"
       ],
